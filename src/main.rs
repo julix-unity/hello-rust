@@ -18,9 +18,14 @@ fn main() {
     
     println!("The secret number is: {secret_number}");
 
-    if &secret_number == &guess.trim().parse().unwrap() {
-        println!("Which matches!");
-    } else {
-        println!("Which doesn't match!");
+    match guess.trim().parse::<i32>() {
+        Ok(num) => {
+            if num == secret_number {
+                println!("Which matches!");
+            } else {
+                println!("Which doesn't match!");
+            }
+        },
+        Err(_) => println!("Please enter a valid number."),
     }
 }
