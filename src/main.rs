@@ -1,11 +1,26 @@
+use std::io;
+use rand::Rng;
+
 fn main() {
-    println!("Hello, World!");
+    println!("Guess the number!");
 
-    let hello: Vec<i32> = (0..10).collect();
+    let secret_number = rand::thread_rng().gen_range(1..=10);
+    
+    println!("Please input your guess.");
 
-    fn do_stuff(val: &Vec<i32>) {
-        println!("{}", val.len()); // this is a MACRO!
+    let mut guess = String::new();
+
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+
+    println!("You guessed: {guess}");
+    
+    println!("The secret number is: {secret_number}");
+
+    if &secret_number == &guess.trim().parse().unwrap() {
+        println!("Which matches!");
+    } else {
+        println!("Which doesn't match!");
     }
-
-    do_stuff(&hello);
 }
