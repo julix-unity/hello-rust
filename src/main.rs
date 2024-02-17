@@ -37,60 +37,19 @@ fn guessing_game() {
     }
 }
 
-
-// Assume we have a struct that represents user data
-#[derive(Debug)]
-struct User {
-    name: String,
-    age: u32,
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        Some(i) => Some(i + 1),
+        None => None,
+    }
 }
 
-// Imagine this function is part of a library that parses JSON strings into User structs
-// It takes ownership of the input string because parsing can be a consuming operation
-fn parse_json_to_user(data: String) -> User {
-    // Placeholder for actual JSON parsing logic
-    // For demonstration, we'll just construct a User directly
-    User {
-        name: String::from("Jane Doe"),
-        age: 30,
-    }
+fn plus_1(x: i32) -> i32 {
+    x + 1
 }
 
 fn main() {
     // guessing_game();
-
-    let json_data = String::from(r#"{"name": "Jane Doe", "age": 30}"#);
-    let user = parse_json_to_user(json_data); // json_data is moved here
-
-
-    let s1 = gives_ownership();         // gives_ownership moves its return
-    // value into s1
-
-    let s2 = String::from("hello");     // s2 comes into scope
-
-    let s3 = takes_and_gives_back(s2);
-
-    println!("{:?}", s1);
-    println!("{:?}", s2);
-    println!("{:?}", s3);
-    // println!("JSON data: {}", json_data); // This line would cause a compile-time error because json_data is moved
-}
-
-
-fn gives_ownership() -> String {             // gives_ownership will move its
-    // return value into the function
-    // that calls it
-
-let some_string = String::from("yours"); // some_string comes into scope
-
-some_string                              // some_string is returned and
-    // moves out to the calling
-    // function
-}
-
-// This function takes a String and returns one
-fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
-             // scope
-
-a_string  // a_string is returned and moves out to the calling function
+    println!("{:?}", plus_one(None));
+    println!("{:?}", plus_1(None));
 }
