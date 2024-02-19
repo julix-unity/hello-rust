@@ -1,11 +1,21 @@
+use guessing_game::guessing_game;
+
+pub mod guessing_game;
+
+use median_and_mode::{get_median, get_mode};
+
+pub mod median_and_mode;
+
+
+const RUN_GUESSING_GAME: bool = false;
+
 fn main() {
-    println!("Hello, World!");
-
-    let hello: Vec<i32> = (0..10).collect();
-
-    fn do_stuff(val: &Vec<i32>) {
-        println!("{}", val.len()); // this is a MACRO!
+    if RUN_GUESSING_GAME {
+        guessing_game();
     }
 
-    do_stuff(&hello);
+    let vector = vec![1,2,3,4,2, 5, 5, 5,];
+    let median = get_median(vector.clone());
+    let mode = get_mode(vector);
+    println!("Median: {median} and Mode: {:?}", {mode});
 }
