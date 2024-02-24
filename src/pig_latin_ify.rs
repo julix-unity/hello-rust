@@ -1,5 +1,3 @@
-
-
 /*
  * Convert strings to pig latin. 
  * The first consonant of each word is moved to the end of the word and “ay” is added, 
@@ -14,33 +12,30 @@ pub fn pig_latin_ify(word: String) -> String {
     let mut first_letter: Option<char> = None;
     let mut new_word = String::new();
 
+    // go over the letters
     for (i, char) in word.chars().enumerate() {
-        
-        // first letter is vowel case
-        if i == 0 && VOWELS.contains(&char) {
-            // pig-latin-ify and exit
-            new_word = format!("{word}-hay");
-            break;
-        }
-        
-        // first letter is consonant case
         if i == 0 {
-            // store first letter to append at the end
-            println!("test");
+            // store the first letter
             first_letter = Some(char);
-        } else if i != word.len() - 1 {
-            // copy main letters to new word
-            new_word.push(char);
-        } else {
-            // last letter, handle like main letters and pig-latin-ify
-            new_word.push(char);
-            new_word.push('-');
-            if let Some(first) = first_letter {
-                new_word.push(first);
+
+            // if it's a vowel
+            if VOWELS.contains(&char) {
+                // Directly return the result
+                return format!("{}-hay", word); 
             }
-            new_word.push('a');
-            new_word.push('y');
+        } else {
+            // store rest of characters
+            new_word.push(char);
         }
     }
-    return new_word;
+
+    // consonant case
+    if let Some(first) = first_letter {
+        format!("{}-{}ay", new_word, first)
+
+    // empty case
+    } else {
+        // word is empty, return as is.
+        word
+    }
 }
