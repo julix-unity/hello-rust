@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::io;
-use dialoguer::Select;
+use dialoguer::{Input, Select};
 
 fn prompt_and_read(input_prompt: &str) -> String {
     println!("{}", input_prompt);
@@ -32,6 +32,33 @@ fn add_employee_to_department(employees_by_department_map: &mut HashMap<String, 
     }
 }
 
+fn remove_employee_from_department (employees_by_department_map: &mut HashMap<String, Vec<String>>) {
+
+    let employee_name = Input::<String>::new()
+        .with_prompt("Enter the name of the employee you want to delete")
+        .interact_text();
+
+    match employee_name {
+        Ok(name) => {
+            let mut affected_departments = Vec::new();
+
+            for (department, employees) in employees_by_department_map.iter_mut() {
+                if let Some(index) = employees.iter().position(|e| e == &name) {
+                    employees.remove(index);
+                    affected_departments.push(department.clone());
+                    // No break here since an employee can exist in multiple departments
+                }
+            }
+
+            if affected_departments.is_empty() {
+                println!("Employee {} not found in any department.", name);
+            } else {
+                println!("Employee {} removed from the following departments: {:?}", name, affected_departments.join(", "));
+            }
+        },
+        Err(error) => eprintln!("Error reading input: {}", error),
+    }
+}
 /*
 * Using a hash map and vectors, create a text interface to allow a user to add employee names to a department in a company. 
 * For example, “Add Sally to Engineering” or “Add Amir to Sales.” 
@@ -56,7 +83,7 @@ pub fn department_employees() {
     ]);
 
 
-    let options: Vec<&str> = vec!["1) Display employees of a particular department", "2) Display all employees", "3) Add an employee to a department", /*"4) Remove an employee"*/];
+    let options: Vec<&str> = vec!["1) Display employees of a particular department", "2) Display all employees", "3) Add an employee to a department", "4) Remove an employee"];
 
     let selection = Select::new()
         .with_prompt("What do you choose?")
@@ -73,9 +100,6 @@ pub fn department_employees() {
         .unwrap();
         departments[selection].clone()
     };
-
-
-    // println!("{:?}", Vec::from_iter(employees_by_department_map.keys()));
     
     match selection {
         1 => {
@@ -88,6 +112,7 @@ pub fn department_employees() {
         },
         2 => println!("{:?}", employees_by_department_map),
         3 => add_employee_to_department(&mut employees_by_department_map),
+        4 => remove_employee_from_department(&mut employees_by_department_map),
         _ => {}
     }
 
